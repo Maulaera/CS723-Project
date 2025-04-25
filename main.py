@@ -17,9 +17,8 @@ def get_axis_points(structure):
                 else:
                     # If 'CA' is missing, use the first available atom (e.g., 'N', 'C', 'O')
                     for atom in residue:
-                        # You can refine this to choose the best atom based on your specific needs
                         axis_points.append(atom.get_coord())
-                        break  # Just take the first atom as a fallback
+                        break  
     return np.array(axis_points)
 
 def translate_points(points, translation_vector):
@@ -29,17 +28,12 @@ def rotate_points(points, rotation_matrix):
     return np.dot(points, rotation_matrix)
 
 def align_axes(axis1_points, axis2_points):
-    # Compute translation vector (move axis2 to axis1)
     translation_vector = axis1_points[0] - axis2_points[0]
 
-    # Translate axis2 points
     translated_axis2 = translate_points(axis2_points, translation_vector)
 
-    # Compute rotation matrix (align axis2 with axis1)
-    # Simplified as just an example; you should compute actual rotation matrix
-    rotation_matrix = np.identity(3)  # Identity for simplicity (you would compute it)
+    rotation_matrix = np.identity(3)  
 
-    # Rotate axis2 points (for simplicity using the identity matrix)
     rotated_axis2 = rotate_points(translated_axis2, rotation_matrix)
 
     return rotated_axis2
@@ -48,7 +42,6 @@ def write_pdb(output_file, transformed_points):
     # Output the transformed PDB structure
     with open(output_file, 'w') as f:
         for i, point in enumerate(transformed_points):
-            # Write the transformed points back into the PDB file format
             f.write(f"ATOM  {i+1:5d}  CA  ASN A {i+1:4d}    {point[0]:8.3f}{point[1]:8.3f}{point[2]:8.3f}\n")
 
 # Main function
